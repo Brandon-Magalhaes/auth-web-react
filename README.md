@@ -1,6 +1,6 @@
 # Interface de autenticação — React + Vite
 
-Front-end que consome a [API de autenticação](../autenticacao-backend): login, cadastro e dashboard protegido.
+Front-end que consome a [API de autenticação](https://github.com/Brandon-Magalhaes/auth-api-nestjs): login, cadastro e dashboard protegido.
 
 ## Telas
 

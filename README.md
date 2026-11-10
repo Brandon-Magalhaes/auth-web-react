@@ -1,54 +1,47 @@
-# React + TypeScript + Vite
+# Interface de autenticação — React + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Front-end que consome a [API de autenticação](../autenticacao-backend): login, cadastro e dashboard protegido.
 
-Currently, two official plugins are available:
+## Telas
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+| Rota | Tela |
+|---|---|
+| `/login` | formulário de login |
+| `/signup` | formulário de cadastro |
+| `/dashboard` | área protegida; redireciona para `/login` sem token |
 
-## Expanding the ESLint configuration
+## Como funciona
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- Os tokens (`access_token` e `refresh_token`) são salvos no `localStorage`.
+- O `access_token` é aplicado como header padrão do axios (`Authorization: Bearer ...`).
+- Ao abrir o app, `src/App.tsx` verifica se existe token e libera a rota `/dashboard`.
+- Erros da API são exibidos no formulário (ex.: credenciais inválidas, e-mail já cadastrado).
+- O "sair" limpa os tokens e volta para o login.
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## Stack
+
+React 19 · Vite · TypeScript · Tailwind CSS 4 · axios · react-router-dom 7
+
+## Como rodar
+
+Suba primeiro o backend. Depois:
+
+```bash
+npm install
+cp .env.example .env
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+A aplicação abre em `http://localhost:5173`.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Variáveis de ambiente
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+| Variável | Padrão | Uso |
+|---|---|---|
+| `VITE_API_URL` | `http://localhost:3000` | endereço da API |
+
+## Limitações conhecidas
+
+- Não há renovação automática do access token: quando ele expira (15 min), o usuário volta para o login.
+- Tokens em `localStorage` são acessíveis por JavaScript; em produção o recomendado é cookie `httpOnly`.
+- Não há testes automatizados.

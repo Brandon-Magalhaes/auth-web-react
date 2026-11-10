@@ -1,3 +1,4 @@
+import { API_URL } from '../config';
 // src/pages/Dashboard.tsx
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -11,7 +12,7 @@ export default function Dashboard() {
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                const res = await axios.get('http://localhost:3000/users/me');
+                const res = await axios.get(`${API_URL}/users/me`);
                 setUser(res.data);
             } catch (err: any) {
                 setError('Sessão expirada. Faça login novamente.');

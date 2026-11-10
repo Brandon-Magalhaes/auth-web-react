@@ -1,3 +1,4 @@
+import { API_URL } from '../config';
 // src/pages/Login.tsx
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -17,7 +18,7 @@ export default function Login({ onAuth }: LoginProps) {
         e.preventDefault();
         setError('');
         try {
-            const res = await axios.post('http://localhost:3000/auth/login', {
+            const res = await axios.post(`${API_URL}/auth/login`, {
                 email,
                 password,
             });
